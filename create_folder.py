@@ -1,13 +1,8 @@
 from pathlib import Path
 import os, sys
 
-#Change path to current working directory
+# Change path to current working directory
 os.chdir(sys.path[0])
-
-# Locate Körlevél_HMKE.xlsx and create output directory
-EXCEL_FILE_PATH = Path.cwd() / "suncollector" / "Körlevél_HMKE.xlsm"
-Company1_DIR = Path.cwd() / "company1"
-Company1_DIR.mkdir(exist_ok=True)
 
 import xlwings as xw
 
@@ -24,16 +19,20 @@ def max_value(file_path):
 
     return max_value
 
-max_val = max_value('c:/Users/I575327/Documents/Áram projekt/suncollector/Körlevél_HMKE.xlsm')
+max_val = max_value('./Körlevél_HMKE.xlsm')
+
+# Create output directory
+Company1_DIR = Path.cwd() / "company1"
+Company1_DIR.mkdir(exist_ok=True)
 
 NEW_DIR = Path.cwd() / "company1" / f"{max_val + 1}-company1-2023"
 NEW_DIR.mkdir(exist_ok=True)
 
-#type new_max_value to the first empty cell
+# Type new_max_value to the first empty cell
 
-wb = xw.Book(r'c:/Users/I575327/Documents/Áram projekt/suncollector/Körlevél_HMKE.xlsm')
+wb = xw.Book(r'./Körlevél_HMKE.xlsm')
 
-ws = wb.sheets[0]
+ws = wb.sheets[0] # 
 
 column_a = ws.range('A2').expand('down')
 
