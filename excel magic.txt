@@ -1,0 +1,9 @@
+=INDEX(SheetNames,MATCH(1,COUNTIF(INDIRECT("'"&SheetNames&"'W:W"),$B$6),0))
+
+Ctrl+Shift+enter
+
+
+=INDEX(SheetNames,HOL.VAN(1,DARABTELI(INDIREKT("'"&SheetNames&"'W:W"),$B$6),0))
+
+
+Ez csak a worksheet neve, ahol az érték található
