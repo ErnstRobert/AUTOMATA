@@ -1,10 +1,8 @@
 from pathlib import Path
 import os, sys
-
-# Change path to current working directory
-os.chdir(sys.path[0])
-
 import xlwings as xw
+
+os.chdir(sys.path[0])
 
 def max_value(file_path):
     wb = xw.Book(file_path) # Load the Excel workbook

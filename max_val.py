@@ -13,7 +13,7 @@ def max_value(file_path):
 
     return max_value
 
-max_val = max_value('c:/Users/I575327/Documents/Áram projekt/suncollector/Körlevél_HMKE.xlsx')
+max_val = max_value('c:suncollector/Körlevél_HMKE.xlsm')
 
 # Print the result
 print(f"The maximum value in column A across all sheets is: {max_val}")
