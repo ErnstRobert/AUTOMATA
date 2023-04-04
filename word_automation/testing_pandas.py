@@ -1,6 +1,5 @@
 from pathlib import Path
 import pandas as pd
-import re
 import xlwings as xw
 
 current_dir = Path(__file__).parent if "__file__" in locals() else Path.cwd
