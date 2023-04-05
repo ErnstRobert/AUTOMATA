@@ -11,6 +11,11 @@ def new_max_value(file_path="./word_automation.xlsm"):
     return len(df_osszesito["Összesítő"]["Irányítószám"])
 print(new_max_value())
 
+def new_dir():
+    NEW_DIR = Path.cwd() / f"COMP1" / f"{new_max_value()}-COMP1-2023"   #<---- inputból kell a cégnév
+    NEW_DIR.mkdir(exist_ok=True)
+    return 
+
 layout = [
     [sg.Text("Cég név:"), sg.Input(key="cegnev", do_not_clear=False)],
     [sg.Button("Új mappa"), sg.Button("Új ügyfél beolvasás"), sg.Button("Export wordbe"), sg.Exit()],
@@ -23,9 +28,7 @@ while True:
     if event == sg.WIN_CLOSED or event == "Exit":
         break
     if event == "Új mappa":
-        NEW_DIR = sys.path[0] / f"{cegnev}" / f"{new_max_value}-{cegnev}-2023"   #<---- inputból kell a cégnév
-        NEW_DIR.mkdir(exist_ok=True)
-
+        new_dir() 
     if event == "Új ügyfél beolvasás":
         print(event, values)
     if event == "Export wordbe":
