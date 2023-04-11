@@ -9,8 +9,14 @@ os.chdir(sys.path[0])
 def new_max_value(file_path="./word_automation.xlsm"):
     df_osszesito = pd.read_excel(file_path, ["Összesítő"])
     return len(df_osszesito["Összesítő"]["IKTATÓ"]) + 1
-print(new_max_value())
 
+def priv_max_value(file_path="./word_automation.xlsm"):
+    df_priv = pd.read_excel(file_path, ["Magánszemély"])
+    return len(df_priv["Magánszemély"]["Irányítószám"]) + 1
+
+def corp_max_value(file_path="./word_automation.xlsm"):
+    df_corp = pd.read_excel(file_path, ["Jogi személy"])
+    return len(df_corp["Jogi személy"]["Irányítószám"]) + 1
 
 def new_dir(cegnev):
     Company1_DIR = Path.cwd() / f"{cegnev}"
@@ -22,26 +28,49 @@ def new_dir(cegnev):
     sh = wb.sheets("Összesítő")
     sh.range(f"U{new_max_value() + 1}").value = f"{new_max_value()}-{cegnev}-2023"
     wb.save("./word_automation.xlsm")
-    return
+    return NEW_DIR 
+
+def load_data(cust_file_path):
+    cust_file_name= Path(cust_file_path)
+    wb_cust = xw.Book(cust_file_name)
+    wb_main = xw.Book("./word_automation.xlsm")
+    sht_priv = wb_main.sheets("Magánszemély")
+    sht_corp = wb_main.sheets("Jogi személy")
+
+    if wb_cust.sheets("magánszemély").range("D2").value == "Magánszemély":
+        sht_cust = wb_cust.sheets("magánszemély")
+        sht_priv.range(f"A{priv_max_value() + 1}").value = sht_cust.range("A2:T2").value
+        wb_main.save("./word_automation.xlsm")
+        priv_max_value()
+        return
+    else:
+        sht_cust = wb_cust.sheets("Jogi személy")
+        sht_corp.range(f"A{corp_max_value() + 1}").value = sht_cust.range("A2:T2").value
+        wb_main.save("./word_automation.xlsm")
+        corp_max_value()
+        return
 
 layout = [
-    [sg.Text("Válassz céget:"), sg.OptionMenu(values = ["cég1", "cég2", "cég3"], key="-CEG_NEV-"), sg.Button("Új mappa")],
+    [sg.Text("Válassz céget:"), sg.OptionMenu(values = ["cég1", "cég2", "cég3"], key="-CEG_NEV-"), sg.Button("Új mappa létrehozása")],
     [sg.Text("Ügyfél adatok beolvasása:"), sg.Input(key="-IN-"), sg.FileBrowse()],
-    [sg.Button("Export wordbe"), sg.Exit()],
+    [sg.Button("Ügyfél beolvasás összesítőbe"), sg.Button("Export wordbe"), sg.Exit()],
 ]
 
 window = sg.Window("Excelmagic", layout)
 
 while True:
     event, values = window.read()
-    print(event, values)
+    
     if event == sg.WIN_CLOSED or event == "Exit":
         break
-
-    if event == "Új mappa":
-        new_dir(values["-CEG_NEV-"])
-    if event == "Új ügyfél beolvasás":
-        print(event, values)
+    print(event, values)
+    if event == "Új mappa létrehozása":
+        # new_dir(values["-CEG_NEV-"])                              <-------- !!!!!!!!!! ha nem kell felugró ablak !!!!!!!!!!!!!!!!!
+        sg.PopupScrolled(f"Új mappa: {new_dir(values['-CEG_NEV-'])}")
+    if event == "Ügyfél beolvasás összesítőbe":
+        load_data(values["-IN-"])
+        priv_max_value()
+        corp_max_value()
     if event == "Export wordbe":
         print(event, values)
 
