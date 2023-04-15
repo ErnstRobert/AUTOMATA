@@ -40,12 +40,14 @@ def load_data(cust_file_path):
     if wb_cust.sheets("magánszemély").range("D2").value == "Magánszemély":
         sht_cust = wb_cust.sheets("magánszemély")
         sht_priv.range(f"A{priv_max_value() + 1}").value = sht_cust.range("A2:T2").value
+        print(cust_file_path)
         wb_main.save("./word_automation.xlsm")
         priv_max_value()
         return
     else:
         sht_cust = wb_cust.sheets("Jogi személy")
         sht_corp.range(f"A{corp_max_value() + 1}").value = sht_cust.range("A2:T2").value
+        print(cust_file_path)
         wb_main.save("./word_automation.xlsm")
         corp_max_value()
         return
