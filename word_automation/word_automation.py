@@ -28,6 +28,7 @@ def new_dir(cegnev):
     wb = xw.Book(file_name)
     sh = wb.sheets("Összesítő")
     sh.range(f"U{new_max_value() + 1}").value = f"{new_max_value()}-{cegnev}-2023"
+    sh.range(f"AH{new_max_value() + 1}").value = f"{NEW_DIR}"
     wb.save("./word_automation.xlsm")
     return NEW_DIR 
 
@@ -59,12 +60,21 @@ def main():
     wb = xw.Book.caller()
     sht_panel = wb.sheets['PANEL']
     doc = DocxTemplate('hmke.docx')
+    plan1 = DocxTemplate('1fázis.docx')
+    plan3 = DocxTemplate('3fázis.docx')
 
     context = sht_panel.range('A2').options(dict, expand='table', numbers=int).value
     print(context)
-    output_name = f"proba_{context['IKTATÓ']}.docx"
+    output_name = f"{context['PATH_TO_DIR']}\proba_{context['IKTATÓ']}.docx"
+    output_plan = f"{context['PATH_TO_DIR']}\plan_{context['IKTATÓ']}.docx"
     doc.render(context)
     doc.save(output_name)
+    if sht_panel.range('B22').value == "1 fázis":
+        plan1.render(context)
+        plan1.save(output_plan)
+    else:
+        plan3.render(context)
+        plan3.save(output_plan)
 
 layout = [
     [sg.Text("Válassz céget:"), sg.OptionMenu(values = ["cég1", "cég2", "cég3"], key="-CEG_NEV-"), sg.Button("Új mappa létrehozása")],
