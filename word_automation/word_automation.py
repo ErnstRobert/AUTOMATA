@@ -31,18 +31,6 @@ def new_dir(cegnev):
     wb.save("./word_automation.xlsm")
     return NEW_DIR 
 
-def new_dir(cegnev):
-    Company1_DIR = Path.cwd() / f"{cegnev}"
-    Company1_DIR.mkdir(exist_ok=True)
-    NEW_DIR = Path.cwd() / f"{cegnev}" / f"{new_max_value()}-{cegnev}-2023"
-    NEW_DIR.mkdir(exist_ok=True)
-    file_name = Path("./word_automation.xlsm")
-    wb = xw.Book(file_name)
-    sh = wb.sheets("Összesítő")
-    sh.range(f"U{new_max_value() + 1}").value = f"{new_max_value()}-{cegnev}-2023"
-    wb.save("./word_automation.xlsm")
-    return NEW_DIR 
-
 def load_data(cust_file_path):
     cust_file_name= Path(cust_file_path)
     wb_cust = xw.Book(cust_file_name)
@@ -70,7 +58,7 @@ def load_data(cust_file_path):
 def main():
     wb = xw.Book.caller()
     sht_panel = wb.sheets['PANEL']
-    doc = DocxTemplate('1fázis.docx')
+    doc = DocxTemplate('hmke.docx')
 
     context = sht_panel.range('A2').options(dict, expand='table', numbers=int).value
     print(context)
