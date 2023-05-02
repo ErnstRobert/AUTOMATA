@@ -39,8 +39,8 @@ def load_data(cust_file_path):
     sht_priv = wb_main.sheets("Magánszemély")
     sht_corp = wb_main.sheets("Jogi személy")
 
-    if wb_cust.sheets("magánszemély").range("D2").value == "Magánszemély":
-        sht_cust = wb_cust.sheets("magánszemély")
+    if wb_cust.sheets("Magánszemély").range("D2").value == "Magánszemély":
+        sht_cust = wb_cust.sheets("Magánszemély")
         sht_priv.range(f"A{priv_max_value() + 1}").value = sht_cust.range("A2:T2").value
         sht_priv.range(f"U{priv_max_value() + 1}").value = cust_file_path.split("/")[-2]
         sht_priv.range(f"V{priv_max_value() + 1}").value = sht_cust.range("V2:AC2").value
