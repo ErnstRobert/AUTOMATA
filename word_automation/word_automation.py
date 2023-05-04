@@ -30,6 +30,7 @@ def new_dir(cegnev):
     sh.range(f"U{new_max_value() + 1}").value = f"{new_max_value()}-{cegnev}-2023"
     sh.range(f"AH{new_max_value() + 1}").value = f"{NEW_DIR}"
     wb.save("./word_automation.xlsm")
+    xw.App.quit(xw.apps.active)
     return NEW_DIR 
 
 def load_data(cust_file_path):
@@ -38,22 +39,27 @@ def load_data(cust_file_path):
     wb_main = xw.Book("./word_automation.xlsm")
     sht_priv = wb_main.sheets("Magánszemély")
     sht_corp = wb_main.sheets("Jogi személy")
+    sht_panel = wb_main.sheets("PANEL")
 
     if wb_cust.sheets("Magánszemély").range("D2").value == "Magánszemély":
         sht_cust = wb_cust.sheets("Magánszemély")
         sht_priv.range(f"A{priv_max_value() + 1}").value = sht_cust.range("A2:T2").value
         sht_priv.range(f"U{priv_max_value() + 1}").value = cust_file_path.split("/")[-2]
         sht_priv.range(f"V{priv_max_value() + 1}").value = sht_cust.range("V2:AC2").value
+        sht_panel.range("B6").value = cust_file_path.split("/")[-2]
         wb_main.save("./word_automation.xlsm")
         priv_max_value()
+        xw.App.quit(xw.apps.active)
         return
     else:
         sht_cust = wb_cust.sheets("Jogi személy")
         sht_corp.range(f"A{corp_max_value() + 1}").value = sht_cust.range("A2:U2").value
         sht_corp.range(f"V{corp_max_value() + 1}").value = cust_file_path.split("/")[-2]
         sht_corp.range(f"W{corp_max_value() + 1}").value = sht_cust.range("W2:AD2").value
+        sht_panel.range("B6").value = cust_file_path.split("/")[-2]
         wb_main.save("./word_automation.xlsm")
         corp_max_value()
+        xw.App.quit(xw.apps.active)
         return
     
 def main():
@@ -72,12 +78,14 @@ def main():
     if sht_panel.range('B22').value == "1 fázis":
         plan1.render(context)
         plan1.save(output_plan)
+        xw.App.quit(xw.apps.active)
     else:
         plan3.render(context)
         plan3.save(output_plan)
+        xw.App.quit(xw.apps.active)
 
 layout = [
-    [sg.Text("Válassz céget:"), sg.OptionMenu(values = ["cég1", "cég2", "cég3"], key="-CEG_NEV-"), sg.Button("Új mappa létrehozása")],
+    [sg.Text("Válassz céget:"), sg.OptionMenu(values = ["VERDACCIO", "ENERGO INVESTMENT", "GREEN DEALER"], key="-CEG_NEV-"), sg.Button("Új mappa létrehozása")],
     [sg.Text("Ügyfél adatok beolvasása:"), sg.Input(key="-IN-"), sg.FileBrowse()],
     [sg.Button("Ügyfél beolvasás összesítőbe"), sg.Button("Export wordbe"), sg.Exit()],
 ]
