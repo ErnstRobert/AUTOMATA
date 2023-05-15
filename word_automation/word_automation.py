@@ -4,6 +4,8 @@ import pandas as pd
 import os, sys
 import xlwings as xw
 from docxtpl import DocxTemplate
+from PyPDF2 import PdfWriter, PdfReader
+import win32com.client as win32
 
 os.chdir(sys.path[0])
 
@@ -61,7 +63,7 @@ def load_data(cust_file_path):
         corp_max_value()
         xw.App.quit(xw.apps.active)
         return
-    
+       
 def main():
     wb = xw.Book.caller()
     sht_panel = wb.sheets['PANEL']
@@ -83,6 +85,26 @@ def main():
         plan3.render(context)
         plan3.save(output_plan)
         xw.App.quit(xw.apps.active)
+
+    word = win32.DispatchEx("Word.Application")
+    new_name = output_name.replace(".docx", r".pdf")
+    new_plan = output_plan.replace(".docx", r".pdf")
+    worddoc = word.Documents.Open(output_name)
+    worddoc.SaveAs(new_name, FileFormat=17)
+    worddoc = word.Documents.Open(output_plan)
+    worddoc.SaveAs(new_plan, FileFormat=17)
+    worddoc.Close()
+
+    merger = PdfWriter()
+    source_dir = context['PATH_TO_DIR']
+    pdf_files = list(Path(source_dir).glob('*.pdf'))
+
+    for pdf_file in pdf_files:
+        merger.append(PdfReader(str(pdf_file), 'rb'))
+
+    new_pdf = f"{context['PATH_TO_DIR']}\MAGIC.pdf"
+    merger.write(new_pdf)
+    merger.close()
 
 layout = [
     [sg.Text("Válassz céget:"), sg.OptionMenu(values = ["VERDACCIO", "ENERGO INVESTMENT", "GREEN DEALER"], key="-CEG_NEV-"), sg.Button("Új mappa létrehozása")],
