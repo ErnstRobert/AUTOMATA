@@ -1,0 +1,8 @@
+inverterk/termelő berendezés csatlakozása ha egyfázis akkor L1 ha 3 fázisú akkor L1, L2, L3 = 2.3-as pontba is ugyanez
+word: ellátó hálózat leírása = transzformátor az összesítőben 
+
+
+felhasználási hely scsatlakozási módja egyfázisú vagy háromfázisú (betűvel ki kell írni)
+
+
+telepítési hely jelleg: ha jogi akkor "egyéb üzleti", ha magán akkor lakóház
