@@ -73,11 +73,11 @@ def main():
 
     context = sht_panel.range('A2').options(dict, expand='table', numbers=int).value
     print(context)
-    output_name = f"{context['PATH_TO_DIR']}\proba_{context['IKTATÓ']}.docx"
-    output_plan = f"{context['PATH_TO_DIR']}\plan_{context['IKTATÓ']}.docx"
+    output_name = f"{context['PATH_TO_DIR']}\Dokumentum_{context['IKTATÓ']}.docx"
+    output_plan = f"{context['PATH_TO_DIR']}\Tervrajz_{context['IKTATÓ']}.docx"
     doc.render(context)
     doc.save(output_name)
-    if sht_panel.range('B22').value == "1 fázis":
+    if sht_panel.range('B22').value == "egyfázisú":
         plan1.render(context)
         plan1.save(output_plan)
         xw.App.quit(xw.apps.active)
@@ -102,12 +102,13 @@ def main():
     for pdf_file in pdf_files:
         merger.append(PdfReader(str(pdf_file), 'rb'))
 
-    new_pdf = f"{context['PATH_TO_DIR']}\MAGIC.pdf"
+    new_pdf = f"{context['PATH_TO_DIR']}\HMKE_csatlakozási_dokumentáció_{context['USER_NAME']}_{context['IKTATÓ']}_komplett.pdf"
     merger.write(new_pdf)
     merger.close()
+    return
 
 layout = [
-    [sg.Text("Válassz céget:"), sg.OptionMenu(values = ["VERDACCIO", "ENERGO INVESTMENT", "GREEN DEALER"], key="-CEG_NEV-"), sg.Button("Új mappa létrehozása")],
+    [sg.Text("Válassz céget:"), sg.OptionMenu(values = ["VERDACCIO", "ENERGO INVESTMENT", "GREEN DEALER", "EGRID"], key="-CEG_NEV-"), sg.Button("Új mappa létrehozása")],
     [sg.Text("Ügyfél adatok beolvasása:"), sg.Input(key="-IN-"), sg.FileBrowse()],
     [sg.Button("Ügyfél beolvasás összesítőbe"), sg.Button("Export wordbe"), sg.Exit()],
 ]
